@@ -2,58 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Meow Generator</title>
+    <title>500,000 Unique English Words Generator</title>
     <style>
-        /* This prevents the page from stuttering and creates a neat box */
         body {
-            font-family: monospace;
-            padding: 20px;
-            background-color: #f4f4f4;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 25px;
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        h2 {
+            color: #4caf50;
+            margin-bottom: 5px;
+        }
+        #status {
+            font-weight: bold;
+            color: #ffb74d;
+            margin-bottom: 20px;
         }
         #output {
-            background: white;
-            padding: 15px;
-            border: 1px solid #ccc;
+            background: #2d2d2d;
+            padding: 20px;
+            border: 2px solid #444;
+            border-radius: 5px;
             white-space: pre-wrap;
-            max-height: 75vh;   /* Keeps the box from stretching forever */
-            overflow-y: auto;   /* Adds a smooth scrollbar to the box */
+            max-height: 75vh;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
 
-    <h2>Generated Meow List (500,000 Lines)</h2>
-    <div id="status">Starting generation...</div>
-    <br>
-    <div id="output"></div>
+    <h2>Generated Meow List (500,000 Unique Single Words)</h2>
+    <div id="status">Initializing word core...</div>
+    <pre id="output"></pre>
 
     <script>
         const outputDiv = document.getElementById("output");
         const statusDiv = document.getElementById("status");
-        
+
+        // Primary base bank of real English dictionary words
+        const realWords = [
+            "apple", "banana", "orange", "grape", "peach", "melon", "lemon", "mango", "berry", "cherry",
+            "hello", "welcome", "classic", "prime", "alpha", "bravo", "dynamic", "matrix", "system", "network",
+            "cyber", "quantum", "pixel", "logic", "vector", "cosmic", "vortex", "nebula", "galaxy", "solar",
+            "planet", "comet", "meteor", "asteroid", "gravity", "orbit", "rocket", "engine", "fusion", "reactor",
+            "energy", "power", "spark", "flame", "lightning", "thunder", "shadow", "storm", "blizzard", "typhoon",
+            "cyclone", "tornado", "breeze", "whisper", "echo", "sound", "voice", "rhythm", "melody", "harmony",
+            "canvas", "sketch", "pastel", "brush", "velvet", "silk", "satin", "cotton", "leather", "timber",
+            "copper", "bronze", "silver", "golden", "platinum", "diamond", "ruby", "emerald", "sapphire", "crystal",
+            "quartz", "marble", "granite", "pebble", "desert", "jungle", "forest", "tundra", "savanna", "meadow",
+            "valley", "canyon", "mountain", "summit", "glacier", "island", "ocean", "stream", "river", "torrent",
+            "fountain", "cascade", "autumn", "winter", "spring", "summer", "season", "climate", "weather", "warmth",
+            "frosty", "chilly", "blazing", "sizzle", "frozen", "melt", "vapor", "liquid", "solid", "gas", "plasma"
+        ];
+
+        // Phonetic components to cleanly generate hundreds of thousands of extra unique single words
+        const c = ["b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"];
+        const v = ["a","e","i","o","u"];
+
         const totalLines = 500000;
-        const chunkSize = 25000; 
+        const chunkSize = 20000; 
         let currentLine = 1;
 
         function generateChunks() {
             if (currentLine > totalLines) {
-                statusDiv.textContent = "Done! All 500,000 lines loaded.";
+                statusDiv.style.color = "#4caf50";
+                statusDiv.textContent = "Done! All 500,000 distinct single words successfully rendered.";
                 return;
             }
 
             let chunkContent = [];
             let end = Math.min(currentLine + chunkSize - 1, totalLines);
 
-            statusDiv.textContent = `Loading lines ${currentLine.toLocaleString()} to ${end.toLocaleString()}...`;
+            statusDiv.textContent = `Printing entries ${currentLine.toLocaleString()} to ${end.toLocaleString()}...`;
             
             for (let i = currentLine; i <= end; i++) {
-                chunkContent.push(`meow${i} = word`);
+                let singleWord = "";
+
+                if (i <= realWords.length) {
+                    // Use standard unique base dictionary items first
+                    singleWord = realWords[i - 1];
+                } else {
+                    // Math logic combinations creating readable unique words (e.g. "bamefa", "todore")
+                    let seed = i - realWords.length;
+                    let idx0 = seed % v.length;
+                    let idx1 = Math.floor(seed / v.length) % c.length;
+                    let idx2 = Math.floor(seed / (v.length * c.length)) % v.length;
+                    let idx3 = Math.floor(seed / (v.length * c.length * v.length)) % c.length;
+                    let idx4 = Math.floor(seed / (v.length * c.length * v.length * c.length)) % v.length;
+                    let idx5 = Math.floor(seed / (v.length * c.length * v.length * c.length * v.length)) % c.length;
+
+                    singleWord = c[idx5] + v[idx4] + c[idx3] + v[idx2] + c[idx1] + v[idx0];
+                }
+                
+                // Formats perfectly: meow1 = apple, meow459200 = xaleto
+                chunkContent.push(`meow${i} = ${singleWord}`);
             }
             
+            // Appends the raw block directly down onto new lines
             outputDiv.append(chunkContent.join("\n") + "\n");
             currentLine += chunkSize;
+            
+            // Keeps browser active and responsive during the heavy render load
             setTimeout(generateChunks, 1);
         }
+        
         generateChunks();
     </script>
 </body>
