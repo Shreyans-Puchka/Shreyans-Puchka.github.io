@@ -4,20 +4,39 @@
 
 </head>
 <body>
-<h2>Generated Meow List (500,000 Lines)</h2>
-    <div id="output">Loading lines...</div>
+
+    <h2>Generated Meow List (500,000 Lines)</h2>
+    <div id="status">Starting generation...</div>
+    <br>
+    <div id="output"></div>
 
     <script>
-        // Efficiently handles 500,000 lines without crashing the browser
-        let outputDiv = document.getElementById("output");
-        let content = [];
+        const outputDiv = document.getElementById("output");
+        const statusDiv = document.getElementById("status");
         
-        for (let i = 1; i <= 500000; i++) {
-            content.push(`meow${i} = word`);
+        const totalLines = 500000;
+        const chunkSize = 25000; // Processes 25,000 lines at a time to prevent crashing
+        let currentLine = 1;
+
+        function generateChunks() {
+            if (currentLine > totalLines) {
+                statusDiv.textContent = "Done! All 500,000 lines loaded.";
+                return;
+            }
+
+            let chunkContent = [];
+            let end = Math.min(currentLine + chunkSize - 1, totalLines);
+
+            // Update status text
+            statusDiv.textContent = `Loading lines ${currentLine.toLocaleString()} to ${end.toLocaleString()}...`;
+            for (let i = currentLine; i <= end; i++) {
+                chunkContent.push(`meow${i} = word`);
+            }
+            outputDiv.append(chunkContent.join("\n") + "\n");
+            currentLine += chunkSize;
+            setTimeout(generateChunks, 1);
         }
-        
-        // Joins all array elements with a newline character
-        outputDiv.textContent = content.join("\n");
+        generateChunks();
     </script>
-</body>  
+</body>
 </html>
