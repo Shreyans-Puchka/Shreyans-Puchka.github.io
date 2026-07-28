@@ -1,7 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
+    <meta charset="UTF-8">
+    <title>Meow Generator</title>
+    <style>
+        /* This prevents the page from stuttering and creates a neat box */
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #output {
+            background: white;
+            padding: 15px;
+            border: 1px solid #ccc;
+            white-space: pre-wrap;
+            max-height: 75vh;   /* Keeps the box from stretching forever */
+            overflow-y: auto;   /* Adds a smooth scrollbar to the box */
+        }
+    </style>
 </head>
 <body>
 
@@ -15,7 +32,7 @@
         const statusDiv = document.getElementById("status");
         
         const totalLines = 500000;
-        const chunkSize = 25000; // Processes 25,000 lines at a time to prevent crashing
+        const chunkSize = 25000; 
         let currentLine = 1;
 
         function generateChunks() {
@@ -27,11 +44,12 @@
             let chunkContent = [];
             let end = Math.min(currentLine + chunkSize - 1, totalLines);
 
-            // Update status text
             statusDiv.textContent = `Loading lines ${currentLine.toLocaleString()} to ${end.toLocaleString()}...`;
+            
             for (let i = currentLine; i <= end; i++) {
                 chunkContent.push(`meow${i} = word`);
             }
+            
             outputDiv.append(chunkContent.join("\n") + "\n");
             currentLine += chunkSize;
             setTimeout(generateChunks, 1);
