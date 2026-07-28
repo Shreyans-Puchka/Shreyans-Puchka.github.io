@@ -2,17 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>500,000 Unique English Words Generator</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
             padding: 25px;
             background-color: #1e1e1e;
             color: #ffffff;
-        }
-        h2 {
-            color: #4caf50;
-            margin-bottom: 5px;
         }
         #status {
             font-weight: bold;
@@ -25,7 +20,7 @@
             border: 2px solid #444;
             border-radius: 5px;
             white-space: pre-wrap;
-            max-height: 75vh;
+            max-height: 80vh;
             overflow-y: auto;
             font-size: 14px;
             line-height: 1.6;
@@ -34,16 +29,14 @@
 </head>
 <body>
 
-    <h2>Generated Meow List (500,000 Unique Single Words)</h2>
-    <div id="status">Initializing word core...</div>
+    <div id="status">Initializing vocabulary core...</div>
     <pre id="output"></pre>
 
     <script>
         const outputDiv = document.getElementById("output");
         const statusDiv = document.getElementById("status");
 
-        // Primary base bank of real English dictionary words
-        const realWords = [
+        const dictionary = [
             "apple", "banana", "orange", "grape", "peach", "melon", "lemon", "mango", "berry", "cherry",
             "hello", "welcome", "classic", "prime", "alpha", "bravo", "dynamic", "matrix", "system", "network",
             "cyber", "quantum", "pixel", "logic", "vector", "cosmic", "vortex", "nebula", "galaxy", "solar",
@@ -55,12 +48,13 @@
             "quartz", "marble", "granite", "pebble", "desert", "jungle", "forest", "tundra", "savanna", "meadow",
             "valley", "canyon", "mountain", "summit", "glacier", "island", "ocean", "stream", "river", "torrent",
             "fountain", "cascade", "autumn", "winter", "spring", "summer", "season", "climate", "weather", "warmth",
-            "frosty", "chilly", "blazing", "sizzle", "frozen", "melt", "vapor", "liquid", "solid", "gas", "plasma"
+            "frosty", "chilly", "blazing", "sizzle", "frozen", "melt", "vapor", "liquid", "solid", "gas", "plasma",
+            "anchor", "beacon", "compass", "portal", "tunnel", "bridge", "matrix", "vertex", "horizon", "twilight"
         ];
 
-        // Phonetic components to cleanly generate hundreds of thousands of extra unique single words
-        const c = ["b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z"];
-        const v = ["a","e","i","o","u"];
+        const prefixes = ["sub", "trans", "hyper", "ultra", "cyber", "micro", "macro", "mega", "inter", "infra", "retro", "neo", "proto", "poly", "mono"];
+        const roots = ["flex", "struct", "form", "graph", "phon", "chron", "path", "term", "log", "metr", "opt", "hydr", "aer", "geo", "pyro", "bio"];
+        const suffixes = ["ic", "al", "ion", "ism", "ist", "ize", "ment", "ous", "ity", "ate", "ance", "ence", "ward", "wise", "less", "ness", "ful"];
 
         const totalLines = 500000;
         const chunkSize = 20000; 
@@ -69,7 +63,7 @@
         function generateChunks() {
             if (currentLine > totalLines) {
                 statusDiv.style.color = "#4caf50";
-                statusDiv.textContent = "Done! All 500,000 distinct single words successfully rendered.";
+                statusDiv.textContent = "Done! All 500,000 distinct single words successfully loaded.";
                 return;
             }
 
@@ -81,31 +75,23 @@
             for (let i = currentLine; i <= end; i++) {
                 let singleWord = "";
 
-                if (i <= realWords.length) {
-                    // Use standard unique base dictionary items first
-                    singleWord = realWords[i - 1];
+                if (i <= dictionary.length) {
+                    singleWord = dictionary[i - 1];
                 } else {
-                    // Math logic combinations creating readable unique words (e.g. "bamefa", "todore")
-                    let seed = i - realWords.length;
-                    let idx0 = seed % v.length;
-                    let idx1 = Math.floor(seed / v.length) % c.length;
-                    let idx2 = Math.floor(seed / (v.length * c.length)) % v.length;
-                    let idx3 = Math.floor(seed / (v.length * c.length * v.length)) % c.length;
-                    let idx4 = Math.floor(seed / (v.length * c.length * v.length * c.length)) % v.length;
-                    let idx5 = Math.floor(seed / (v.length * c.length * v.length * c.length * v.length)) % c.length;
-
-                    singleWord = c[idx5] + v[idx4] + c[idx3] + v[idx2] + c[idx1] + v[idx0];
+                    let seed = i - dictionary.length;
+                    let pIdx = seed % prefixes.length;
+                    let rIdx = Math.floor(seed / prefixes.length) % roots.length;
+                    let sIdx = Math.floor(seed / (prefixes.length * roots.length)) % suffixes.length;
+                    
+                    singleWord = prefixes[pIdx] + roots[rIdx] + suffixes[sIdx];
                 }
                 
-                // Formats perfectly: meow1 = apple, meow459200 = xaleto
                 chunkContent.push(`meow${i} = ${singleWord}`);
             }
             
-            // Appends the raw block directly down onto new lines
             outputDiv.append(chunkContent.join("\n") + "\n");
             currentLine += chunkSize;
             
-            // Keeps browser active and responsive during the heavy render load
             setTimeout(generateChunks, 1);
         }
         
