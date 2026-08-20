@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Message</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #f2f2f2;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message-box {
+            width: 380px;
+            max-width: 90%;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            margin: 5px 0 10px;
+            font-size: 28px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        #openButton {
+            border: none;
+            background: #111;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        #openButton:hover {
+            background: #333;
+        }
+
+        #videoContainer {
+            display: none;
+            margin-top: 25px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        #status {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="message-box">
+
+        <div class="icon">🎙️</div>
+
+        <h1>Voice Message</h1>
+
+        <p>You have received a new voice message.</p>
+
+        <button id="openButton" onclick="openMessage()">
+            ▶ Open Voice Message
+        </button>
+
+        <div id="videoContainer">
+
+            <video id="rickVideo" controls>
+                <source src="rick.mp4" type="video/mp4">
+                Your browser does not support MP4 video.
+            </video>
+
+            <div id="status">
+                Voice message playing...
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function openMessage() {
+
+            const button = document.getElementById("openButton");
+            const container = document.getElementById("videoContainer");
+            const video = document.getElementById("rickVideo");
+
+            // Show the video
+            container.style.display = "block";
+
+            // Change the button
+            button.textContent = "🎵 Playing...";
+
+            // Play the video
+            video.play().catch(function(error) {
+                console.log("Playback was blocked:", error);
+                button.textContent = "▶ Click to Play";
+            });
+        }
+    </script>
+
+</body>
+</html>
