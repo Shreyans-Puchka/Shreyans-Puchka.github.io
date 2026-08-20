@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 30px;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .quiz {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #888;
+        }
+
+        button {
+            display: block;
+            margin: 30px auto;
+            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        #result {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz">
+
+    <h1>🧠 Shreyans Website Quiz</h1>
+
+    <div class="question">
+        <p>1. What is my name?</p>
+        <input type="text" id="q1">
+    </div>
+
+    <div class="question">
+        <p>2. Do I have a review system?</p>
+        <input type="text" id="q2">
+    </div>
+
+    <div class="question">
+        <p>3. What is behind me in my profile picture?</p>
+        <input type="text" id="q3">
+    </div>
+
+    <div class="question">
+        <p>4. How many games are in Gamest?</p>
+        <input type="text" id="q4">
+    </div>
+
+    <div class="question">
+        <p>5. How many companies do I have?</p>
+        <input type="text" id="q5">
+    </div>
+
+    <div class="question">
+        <p>6. Do I have my own search engine?</p>
+        <input type="text" id="q6">
+    </div>
+
+    <div class="question">
+        <p>7. What is the name of my search engine but not the 2.0?</p>
+        <input type="text" id="q7">
+    </div>
+
+    <div class="question">
+        <p>8. Is my profile picture square in shape?</p>
+        <input type="text" id="q8">
+    </div>
+
+    <button onclick="checkScore()">Check Score</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function cleanAnswer(answer) {
+    return answer.trim().toLowerCase();
+}
+
+function checkScore() {
+
+    let score = 0;
+
+    // Q1
+    if (cleanAnswer(document.getElementById("q1").value) === "shreyans") {
+        score++;
+    }
+
+    // Q2
+    if (cleanAnswer(document.getElementById("q2").value) === "yes") {
+        score++;
+    }
+
+    // Q3
+    let q3 = cleanAnswer(document.getElementById("q3").value);
+
+    let q3Answers = [
+        "statue of horses",
+        "black statue of horses",
+        "horse statue",
+        "statue of horse",
+        "black horse statue",
+        "black statue of horse"
+    ];
+
+    if (q3Answers.includes(q3)) {
+        score++;
+    }
+
+    // Q4
+    let q4 = cleanAnswer(document.getElementById("q4").value);
+
+    if (q4 === "5" || q4 === "five") {
+        score++;
+    }
+
+    // Q5
+    if (cleanAnswer(document.getElementById("q5").value) === "2") {
+        score++;
+    }
+
+    // Q6
+    if (cleanAnswer(document.getElementById("q6").value) === "yes") {
+        score++;
+    }
+
+    // Q7
+    // CASE-SENSITIVE!
+    if (document.getElementById("q7").value.trim() === "Shreyans.AG") {
+        score++;
+    }
+
+    // Q8
+    if (cleanAnswer(document.getElementById("q8").value) === "no") {
+        score++;
+    }
+
+    document.getElementById("result").textContent =
+        "🎯 Your score is " + score + "/8";
+}
+
+</script>
+
+</body>
+</html>
