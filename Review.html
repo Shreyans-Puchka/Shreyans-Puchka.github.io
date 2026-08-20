@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Box</title>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #message {
+            width: 350px;
+            max-width: 80vw;
+            padding: 14px;
+            font-size: 17px;
+            border: 2px solid #555;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        #message:focus {
+            border-color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>💬 Write Something</h1>
+
+        <form
+            action="https://formspree.io/f/xljrazzr"
+            method="POST"
+        >
+            <input
+                id="message"
+                type="text"
+                name="message"
+                placeholder="Type something and press Enter..."
+                autocomplete="off"
+                required
+            >
+        </form>
+
+    </div>
+
+</body>
+</html>
