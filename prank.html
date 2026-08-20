@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You Are Hacked</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    #mainMessage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: red;
+        font-size: clamp(50px, 10vw, 150px);
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+        text-shadow: 0 0 20px red;
+    }
+
+    #prankMessage {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 99999;
+    }
+
+    #prankMessage h1 {
+        font-size: 80px;
+        color: lime;
+        margin: 0;
+    }
+
+    #prankMessage p {
+        font-size: 30px;
+    }
+
+    .fakeWindow {
+        position: absolute;
+        width: 300px;
+        min-height: 150px;
+        background: #eeeeee;
+        color: black;
+        border: 3px solid #555;
+        box-shadow: 8px 8px 20px black;
+        z-index: 1000;
+        font-family: Arial, sans-serif;
+    }
+
+    .titleBar {
+        background: #222;
+        color: white;
+        padding: 8px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .fakeX {
+        background: #d00000;
+        color: white;
+        border: none;
+        width: 25px;
+        height: 25px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .fakeContent {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .warning {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="mainMessage">
+    YOU ARE HACKED
+</div>
+
+<div id="prankMessage">
+    <h1>😂 PRANKED!</h1>
+    <p>Nothing was hacked. It was just a webpage prank.</p>
+</div>
+
+<script>
+
+const messages = [
+    "virus.exe wants to access your computer!",
+    "WARNING: Suspicious activity detected!",
+    "Trojan.exe is requesting permission!",
+    "Your computer has been selected!",
+    "System scan in progress...",
+    "CRITICAL SECURITY WARNING!",
+    "Unknown program detected!",
+    "Do you trust virus.exe?",
+    "Multiple threats detected!",
+    "Security system has failed!"
+];
+
+let windows = [];
+let prankStarted = false;
+
+// Wait 10 seconds before the chaos begins
+setTimeout(() => {
+
+    prankStarted = true;
+
+    // Create a fake window every 1.2 seconds
+    const interval = setInterval(() => {
+
+        if (!prankStarted) {
+            clearInterval(interval);
+            return;
+        }
+
+        createFakeWindow();
+
+    }, 1200);
+
+}, 10000);
+
+
+// Create fake virus window
+function createFakeWindow() {
+
+    const win = document.createElement("div");
+    win.className = "fakeWindow";
+
+    const randomMessage =
+        messages[Math.floor(Math.random() * messages.length)];
+
+    // Random position
+    const maxX = window.innerWidth - 320;
+    const maxY = window.innerHeight - 200;
+
+    const x = Math.max(10, Math.random() * maxX);
+    const y = Math.max(10, Math.random() * maxY);
+
+    win.style.left = x + "px";
+    win.style.top = y + "px";
+
+    win.innerHTML = `
+        <div class="titleBar">
+            SECURITY ALERT
+            <button class="fakeX">X</button>
+        </div>
+
+        <div class="fakeContent">
+            <p class="warning">⚠ WARNING!</p>
+            <p>${randomMessage}</p>
+            <p>Action required immediately.</p>
+        </div>
+    `;
+
+    // The X intentionally does NOTHING
+    win.querySelector(".fakeX").addEventListener("click", function(event) {
+        event.preventDefault();
+
+        // Make the prank even more annoying:
+        win.style.left =
+            Math.random() * (window.innerWidth - 320) + "px";
+
+        win.style.top =
+            Math.random() * (window.innerHeight - 200) + "px";
+    });
+
+    document.body.appendChild(win);
+    windows.push(win);
+}
+
+
+// After 25 seconds, reveal the prank
+setTimeout(() => {
+
+    prankStarted = false;
+
+    // Remove all fake windows
+    windows.forEach(win => {
+        win.remove();
+    });
+
+    windows = [];
+
+    // Hide hacked message
+    document.getElementById("mainMessage").style.display = "none";
+
+    // Show prank reveal
+    document.getElementById("prankMessage").style.display = "block";
+
+}, 35000);
+
+</script>
+
+</body>
+</html>
